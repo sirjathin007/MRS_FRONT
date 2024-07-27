@@ -1,0 +1,171 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+        <meta name="referrer" content="origin" />
+        
+
+    </head>
+<title>
+    Add Motors
+</title>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg" id="navigation">
+            <a class="navbar-brand" href="index.html" id="nav_head">Motor Rewinding Shop</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="index.html" id="nav_head">Home <span
+                                class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="add_motors.html" id="nav_head">Add Motors</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="get_all_motors.html" id="nav_head">Edit Motors</a>
+                    </li>
+
+                </ul>
+
+            </div>
+        </nav>
+    </header>
+    <section id="add">
+        <h1>Add New Motor</h1>
+        <div class="container">
+            <fieldset class="form-group border p-3">
+                <legend class="w-auto px-2">User Details</legend>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="name">Name:</label>
+                            <input type="text" class="form-control" id="name" placeholder="Enter your full name">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="division">Division</label>
+                            <select class="form-control" id="division">
+                                <option value="SID">Sponge Iron</option>
+                                <option value="SMS">Steel Melting Shop</option>
+                                <option value="RMD">Rolling Mill</option>
+                                <option value="PD">Power Plant</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="department">Department</label>
+                            <input type="text" class="form-control" id="department">
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="form-group border p-3">
+                <legend class="w-auto px-2">Motor Details</legend>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="motorSerialNumber">Motor S/N:</label>
+                            <input type="text" class="form-control" id="motorSerialNumber" placeholder="Enter your Serial Number">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="phase">Phase</label>
+                            <select class="form-control" id="phase">
+                                <option value="1">1st</option>
+                                <option value="3">3rd</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="fault">Fault:</label>
+                            <input type="text" class="form-control" id="fault">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="hp">HP:</label>
+                            <input type="number" class="form-control" id="hp">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="kw">KW:</label>
+                            <input type="number" class="form-control" id="kw">
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <button type="button" class="btn btn-outline-warning" onclick="submitForm()">Submit</button>
+        </div>
+    </section>
+    <script>
+    
+
+        async function submitForm() {
+            const motor = {
+                name: document.getElementById('name').value,
+                division: document.getElementById('division').value,
+                department: document.getElementById('department').value,
+                motorSerialNumber: document.getElementById('motorSerialNumber').value,
+                phase: document.getElementById('phase').value,
+                fault: document.getElementById('fault').value,
+                hp: document.getElementById('hp').value,
+                kw: document.getElementById('kw').value,
+                reg:`PSPL/${document.getElementById('name').value}/${document.getElementById('hp').value}/${document.getElementById('division').value}`,
+            };
+
+            try {
+                const response = await fetch('https://mrs-production.up.railway.app/api/motors', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(motor)
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log('Motor saved:', result);
+                    alert('Motor saved successfully!');
+                } else {
+                    console.error('Error saving motor:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+    </script>
+
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+    crossorigin="anonymous"></script>
+
+</html>

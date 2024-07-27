@@ -1,0 +1,225 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+</head>
+<title>
+    Edit Motors
+</title>
+<style>
+    body{
+        
+    background-color: rgba(88, 98, 99, 100);
+    }
+    .form-control {
+            margin-bottom: 10px;
+        }
+        .table thead th {
+            background-color: #f8f9fa;
+        }
+        .btn {
+            margin-top: 10px;
+        }
+        .heading-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .add-item-btn {
+            cursor: pointer;
+        }
+</style>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg" id="navigation">
+            <a class="navbar-brand" href="index.html" id="nav_head">Motor Rewinding Shop</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="index.html" id="nav_head">Home <span
+                                class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="add_motors.html" id="nav_head">Add Motors</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="get_all_motors.html" id="nav_head">Edit Motors</a>
+                    </li>
+
+                </ul>
+
+            </div>
+        </nav>
+    </header>
+      
+<section id="mrf">
+    <div class="container mt-4">
+        <h2 class="text-center mb-4">Motor Rewinding Form</h2>
+        <form id="motorRewindingForm">
+            <fieldset>
+                <legend>Motor Rewinding Details:</legend>
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <div class="form-group">
+                            <label for="arrivalDate">Arrival Date</label>
+                            <input type="date" class="form-control" id="arrivalDate" name="arrivalDate" required>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="form-group">
+                            <label for="copperType">Copper Type</label>
+                            <input type="text" class="form-control" id="copperType" name="copperType" placeholder="Type Of Copper Wire Used" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <div class="form-group">
+                            <label for="copperGauge">Copper Gauge</label>
+                            <input type="text" class="form-control" id="copperGauge" name="copperGauge" placeholder="Copper wire Gauge Used" required>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="form-group">
+                            <label for="wtOldCopperWire">WT of OLD Copper Wire (kg)</label>
+                            <input type="number" class="form-control" id="wtOldCopperWire" name="wtOldCopperWire" step="any" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <div class="form-group">
+                            <label for="wtNewCopperWire">WT of New Copper Wire (kg)</label>
+                            <input type="number" class="form-control" id="wtNewCopperWire" name="wtNewCopperWire" step="any" required>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <div class="mt-4">
+                <div class="heading-container mb-3">
+                    <h4 class="mb-0">Items</h4>
+                    <i class="fas fa-plus-circle fa-2x add-item-btn text-primary" onclick="addRow()"></i>
+                </div>
+                <table class="table table-bordered" id="itemTable">
+                    <thead>
+                        <tr>
+                            <th>Item No</th>
+                            <th>Item Name</th>
+                            <th>QTY</th>
+                            <th>UOM</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Rows will be added here dynamically -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="mt-4">
+                <button type="button" class="btn btn-outline-warning btn-block" onclick="submitForm()">Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        let itemCount = 0;
+
+        function addRow() {
+            const tableBody = document.querySelector('#itemTable tbody');
+            const newRow = tableBody.insertRow();
+            const index = itemCount++;
+
+            newRow.innerHTML = `
+                <td><input type="text" class="form-control" name="items[${index}].itemNo" placeholder="Item Number"></td>
+                <td><input type="text" class="form-control" name="items[${index}].itemName"></td>
+                <td><input type="number" class="form-control" name="items[${index}].qty" step="any"></td>
+                <td>
+                    <select class="form-control" name="items[${index}].uom">
+                        <option value="KG">KG</option>
+                        <option value="NO">NO</option>
+                        <option value="MTR">MTR</option>
+                        <option value="LTR">LTR</option>
+                    </select>
+                </td>
+                <td><button type="button" class="btn btn-danger" onclick="removeRow(this)">Remove</button></td>
+            `;
+        }
+
+        function removeRow(button) {
+            const row = button.closest('tr');
+            row.remove();
+        }
+
+        async function submitForm() {
+            const form = document.getElementById('motorRewindingForm');
+            const formData = new FormData(form);
+
+            const data = {};
+            formData.forEach((value, key) => {
+                if (key.startsWith('items[')) {
+                    const [_, index, field] = key.match(/^items\[(\d+)\]\.(.*)$/);
+                    if (!data.items) data.items = [];
+                    if (!data.items[index]) data.items[index] = {};
+                    data.items[index][field] = value;
+                } else {
+                    data[key] = value;
+                }
+            });
+
+            const res=await fetch('https://mrs-production.up.railway.app/api/motor-rewindings', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            if(res.ok)
+            {
+                const result = await res.json();
+                    console.log('Motor saved:', result);
+                    alert('Motor saved successfully!');
+            }
+            else {
+                    alert('Error saving motor:', res.statusText);
+                }
+                
+            // .then(res => res.json())
+            // .then(result => {
+            //     console.log('Success:', res);
+            //     alert('Data submitted successfully!');
+            // })
+            // .catch(error => {
+            //     console.error('Error:', error);
+            //     alert('Failed to submit data.');
+            // });
+        }
+        
+    </script>
+    
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+    crossorigin="anonymous"></script>
+
+</html>
