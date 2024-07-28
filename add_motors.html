@@ -150,6 +150,7 @@
                     const result = await response.json();
                     console.log('Motor saved:', result);
                     alert('Motor saved successfully!');
+                    window.location.href="index.html";
                 } else {
                     console.error('Error saving motor:', response.statusText);
                 }
