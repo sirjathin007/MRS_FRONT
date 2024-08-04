@@ -96,7 +96,7 @@
 
         async function fetchMotors() {
             try {
-                const response = await fetch('http://localhost:3000/api/motors/get_all_motor_rewinidings'); // Adjusted endpoint
+                const response = await fetch('https://mrs-production.up.railway.app/api/motors/get_all_motor_rewinidings'); // Adjusted endpoint
                 if (response.ok) {
                     motors = await response.json();
                     displayMotors();
